@@ -4,7 +4,7 @@ import XCTest
 
 @MainActor
 final class AppFeatureTests: XCTestCase {
-  func testTask() async throws {
+  func testInitialState() async throws {
     let store = TestStore(
       initialState: AppFeature.State(),
       reducer: {
@@ -12,6 +12,6 @@ final class AppFeatureTests: XCTestCase {
       }
     )
 
-    await store.send(.task)
+    expectNoDifference(store.state.home, HomeFeature.State())
   }
 }

@@ -1,5 +1,4 @@
 import ComposableArchitecture
-import Models
 
 @Reducer
 package struct AppFeature {
@@ -10,8 +9,8 @@ package struct AppFeature {
     package init() {}
   }
 
+  @CasePathable
   package enum Action: Equatable {
-    case task
     case home(HomeFeature.Action)
   }
 
@@ -24,11 +23,10 @@ package struct AppFeature {
     Reduce(core)
   }
 
-  package func core(state: inout State, action: Action) -> Effect<Action> {
+  package func core(
+    into state: inout State, action: Action
+  ) -> Effect<Action> {
     switch action {
-    case .task:
-      return .none
-
     case .home:
       return .none
     }

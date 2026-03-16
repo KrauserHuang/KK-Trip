@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 6.2
 
 import Foundation
 import PackageDescription
@@ -10,7 +10,7 @@ let appName = "App"
 let tca = SourceControlDependency(
   package: .package(
     url: "https://github.com/pointfreeco/swift-composable-architecture",
-    exact: "1.20.2"
+    exact: "1.25.1"
   ),
   productName: "ComposableArchitecture"
 )
@@ -63,12 +63,14 @@ let dependencyClientsLive = SingleTargetLibrary(
     dependencies.targetDependency,
     dependenciesMacros.targetDependency,
     dependencyClients.targetDependency,
+    models.targetDependency,
   ]
 )
 let publicApp = SingleTargetLibrary(
   name: "PublicApp",
   dependencies: [
     features.targetDependency,
+    models.targetDependency,
     views.targetDependency,
     dependencyClientsLive.targetDependency,
   ]
@@ -79,8 +81,8 @@ let publicApp = SingleTargetLibrary(
 let package = Package(
   name: appName + "Package",  // To avoid target name collision when importing to Xcode project
   platforms: [
-    .iOS(.v17),
-    .macOS(.v14),
+    .iOS(.v26),
+    .macOS(.v26),
   ],
   products: [
     dependencyClients.product,

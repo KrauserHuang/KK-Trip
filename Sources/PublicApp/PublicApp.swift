@@ -1,8 +1,8 @@
 import ComposableArchitecture
-import DependencyClients
 import DependencyClientsLive
 import Features
 import Models
+import SwiftData
 import SwiftUI
 import Views
 
@@ -19,5 +19,6 @@ public struct PublicApp: App {
         )
       )
     }
+    .modelContainer(for: TravelPlan.self)
   }
 }

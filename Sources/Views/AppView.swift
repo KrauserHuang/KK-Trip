@@ -11,8 +11,5 @@ package struct AppView: View {
 
   package var body: some View {
     HomeView(store: store.scope(state: \.home, action: \.home))
-      .task {
-        await store.send(.task).finish()
-      }
   }
 }

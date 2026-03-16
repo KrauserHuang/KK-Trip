@@ -2,26 +2,29 @@ import ComposableArchitecture
 import Features
 import SwiftUI
 
-struct HomeView: View {
+package struct HomeView: View {
   let store: StoreOf<HomeFeature>
 
-  init(store: StoreOf<HomeFeature>) {
+  package init(store: StoreOf<HomeFeature>) {
     self.store = store
   }
 
-  var body: some View {
-    Text("Home")
-      .task {
-        await store.send(.task).finish()
+  package var body: some View {
+    TabView {
+      Tab("旅行", systemImage: "list.bullet.rectangle.portrait") {
+        TripsListView(
+          store: store.scope(state: \.trips, action: \.trips)
+        )
       }
+    }
   }
 }
 
 #Preview {
-    HomeView(
-        store: .init(
-            initialState: HomeFeature.State(),
-            reducer: { HomeFeature() }
-        )
+  HomeView(
+    store: .init(
+      initialState: HomeFeature.State(),
+      reducer: { HomeFeature() }
     )
+  )
 }
