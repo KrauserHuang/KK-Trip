@@ -8,6 +8,9 @@ package struct TripsFeature {
   @ObservableState
   package struct State: Equatable {
     package var trips: [Trip] = []
+    /// Reference point for countdown display, refreshed whenever the list appears.
+    /// `nil` until the first `.task`, which keeps a freshly built state deterministic.
+    package var now: Date?
     package var path = StackState<Path.State>()
 
     package init() {}
@@ -16,6 +19,7 @@ package struct TripsFeature {
   @CasePathable
   package enum Action: Equatable {
     case task
+    case nowUpdated(Date)
     case tripsLoaded([Trip])
     case addButtonTapped
     case deleteTrip(UUID)
@@ -36,10 +40,17 @@ package struct TripsFeature {
     switch action {
     case .task:
       return .run { send in
+        @Dependency(\.date) var date
+        await send(.nowUpdated(date.now))
+
         @Dependency(\.tripPersistenceClient) var client
         let trips = try await client.fetchAll()
         await send(.tripsLoaded(trips))
       }
+
+    case .nowUpdated(let now):
+      state.now = now
+      return .none
 
     case .tripsLoaded(let trips):
       state.trips = trips

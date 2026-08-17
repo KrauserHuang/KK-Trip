@@ -6,6 +6,7 @@ import XCTest
 @MainActor
 final class TripsFeatureTests: XCTestCase {
   func testTaskLoadsTrips() async throws {
+    let now = Date(timeIntervalSince1970: 1_755_000_000)
     let trips = [
       Trip(
         title: "東京之旅",
@@ -20,9 +21,13 @@ final class TripsFeatureTests: XCTestCase {
       reducer: { TripsFeature() }
     ) {
       $0.tripPersistenceClient.fetchAll = { trips }
+      $0.date = .constant(now)
     }
 
     await store.send(.task)
+    await store.receive(\.nowUpdated) {
+      $0.now = now
+    }
     await store.receive(\.tripsLoaded) {
       $0.trips = trips
     }
