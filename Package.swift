@@ -3,7 +3,7 @@
 import Foundation
 import PackageDescription
 
-let appName = "App"
+let appName = "KK Trip"
 
 // MARK: - Third party dependencies
 
@@ -102,6 +102,7 @@ let package = Package(
     features.target,
     features.testTarget,
     models.target,
+    models.testTarget,
     publicApp.target,
     views.target,
   ]
